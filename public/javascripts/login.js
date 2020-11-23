@@ -18,18 +18,6 @@ function handleLogin(event) {
           alert("Incorrect Username or Password")
        }
      });
-
-    // $.post("/login",{"username": username, "password": password}, function(data, status){
-    //     console.log(data)
-    //     if (data==true){
-    //             
-    //     } else {
-    //         $.router.set('/');
-
-    //         console.log("failed password")
-    //     }
-    //   });
-
 }
 
 function returnHome(event) {

@@ -157,16 +157,6 @@ function renderPlayerCard(player) {
         teamStr = `<h2 id="${player}Team" class="${player}">Current Team: <a id="${team.name}Name" class="teamName">${team.name}</a></h2>`
     }
 
-    let isFavorited = false
-    for (let i = 0; i < favoritedPlayers.length; i++) {
-        if(removeSpecialChar(favoritedPlayers[i].name).trim() == removeSpecialChar(player).trim()) {
-            isFavorited = true;
-            break;
-        }
-    }
-    // console.log(favoritedPlayers)
-    // console.log(isFavorited)
-
     $('.modal').replaceWith(`
         <div id="${player}Card" class="modal is-active playerCard">
             <div class="modal-background"></div>
@@ -194,7 +184,6 @@ function renderPlayerCard(player) {
 }
 
 function renderTeamCard(team) {
-    // `<p> - <a id="${team.players[i]+"Name"}" class="playerName">${team.players[i]}</a><span class="heart" id="${team.players[i]}" state="unliked"><a><i class="far fa-heart" id="heart${team.players[i]}" state="unliked"></i></a></span></p>`
     let teamPlayers = ""
     for (let i = 0; i < team.players.length; i++) {
         teamPlayers += `<li> - <a id="${team.players[i] + "Name"}" class="playerName">${team.players[i]}</a></li>`
@@ -312,7 +301,7 @@ function findCurrentTeamByPlayer(player) {
     if (player == "Adverse") {
         player = "AdverseMeteor"
     }
-    // let lookie = dataset[0].players.find(p => p.name == player)
+
     for (let i = 0; i < currentTeams.length; i++) {
         if (currentTeams[i].status) {
             if (removeSpecialChar(currentTeams[i].sub).trim() == removeSpecialChar(player).trim() || removeSpecialChar(currentTeams[i].coach).trim() == removeSpecialChar(player).trim()) {
@@ -344,23 +333,18 @@ function findTeamByAlias(teamAlias) {
 }
 
 function renderLikedHeart(playerName) {
-    // console.log("PLAYER LIKE")
     return `<span class="heart" id="${playerName}" state="liked"><a><i class="fa fa-heart" id="heart${playerName}" state="liked" style="color: red"></a></i></span>`
 }
 
 function renderUnLikedHeart(playerName) {
-    // console.log("PLAYER UNLIKE")
     return `<span class="heart" id="${playerName}" state="unliked"><a><i class="far fa-heart" id="heart${playerName}" state="unliked"></a></i></span>`
 }
 
 function renderTeamLikedHeart(teamName) {
-    // console.log("TEAM LIKE")
-    // console.log(teamName)
     return `<span class="tmheart" id="${teamName}" state="liked"><a><i class="fa fa-heart" id="tmheart${teamName}" state="liked" style="color: red"></a></i></span>`
 }
 
 function renderTeamUnLikedHeart(teamName) {
-    // console.log("TEAM UNLIKE")
     return `<span class="tmheart" id="${teamName}" state="unliked"><a><i class="far fa-heart" id="tmheart${teamName}" state="unliked"></a></i></span>`
 }
 
@@ -450,7 +434,6 @@ function handleTeamsButtonClick() {
         type: 'GET',
         dataType: 'json',
         success: function (response, textStatus, jqXHR) {
-            // console.log(jqXHR.responseJSON);
             for (let i = 0; i < jqXHR.responseJSON.length; i++) {
                 favoritedTeams[i] = jqXHR.responseJSON[i];
             }
@@ -480,7 +463,6 @@ function handlePlayersButtonClick() {
         type: 'GET',
         dataType: 'json',
         success: function (response, textStatus, jqXHR) {
-            // console.log(jqXHR.responseJSON);
             for (let i = 0; i < jqXHR.responseJSON.length; i++) {
                 favoritedPlayers[i] = jqXHR.responseJSON[i];
             }
@@ -553,15 +535,12 @@ function handleSelectedEvent(selectedEvent) {
         if (region == "NA") {
             switch (selectedEvent) {
                 case 'Regional 1 Stage 1':
-                    // getDataBase("NAFALLR1S1");
                     dataset = NAFALLR1S1
                     break;
                 case 'Regional 1 Stage 2':
-                    // getDataBase("NAFALLR1S2");
                     dataset = NAFALLR1S2
                     break;
                 case 'Regional 1 Playoffs':
-                    //getDataBase("NAFALLR1PO");
                     dataset = NAFALLR1PO
                     break;
                 case 'Regional 2 Stage 1':
@@ -640,7 +619,6 @@ function handlePlayerNameClick(event) {
             favoritedPlayers = jqXHR.responseJSON;
         }
     })
-    // console.log(favoritedPlayers)
     renderPlayerCard(playerName)
 }
 
@@ -654,7 +632,6 @@ function handleTeamNameClick(event) {
             favoritedTeams = jqXHR.responseJSON;
         }
     })
-    // console.log(favoritedTeams)
     renderTeamCard(findTeamByAlias(teamName))
 }
 
@@ -662,7 +639,6 @@ function handleLikeButtonClick(event) {
     let heartID = event.currentTarget.getAttribute('id');
     let player = dataset[0].players.find(p => p.name == heartID.split("heart").join(""));
     let state = event.currentTarget.getAttribute('state');
-    // console.log("Clicked on " + player.name)
 
     if (state == "unliked") {
         $('#' + CSS.escape(heartID)).empty()
@@ -728,17 +704,6 @@ function handleClickPlayerResult(event) {
     let player = event.currentTarget.dataset.id;
     renderPlayerCard(player)
 }
-// document.getElementById('pNameInput').addEventListener('keyup', event => {
-//     const $searchresults = $('#pName-results');
-//     $('#pName-results *').replaceWith();
-//     if (event.code === 'Enter') {
-//         if (event.currentTarget.value != '') {
-//             enteredData = event.currentTarget.value;
-//             let name = getPlayerByName(enteredData);
-//             $searchresults.append(renderPlayerSearch(name));
-//         }
-//     }
-// })
 
 async function handleSearchName(event) {
     const $searchresults = $('#pName-results');
@@ -753,12 +718,9 @@ async function handleSearchName(event) {
                 data: { "name": enteredData },
                 success: function (response, textStatus, jqXHR) {
                     let player = jqXHR.responseJSON
-                    // console.log(player)
                     $searchresults.append(renderPlayerSearch(player));
                 }
             });
-            // let name = await getPlayerByName(event.currentTarget.value);
-            // console.log(name)
            
         }
     }
@@ -775,16 +737,6 @@ function handleClickTeamResult(event) {
     let team = event.currentTarget.dataset.id;
     renderTeamCard(findTeamByAlias(team))
 }
-// document.getElementById('tNameInput').addEventListener('keyup', event => {
-//     const $searchresults = $('#tName-results');
-//     $('#tName-results *').replaceWith();
-//     if (event.code === 'Enter') {
-//         if (event.currentTarget.value != '') {
-//             enteredTeam = event.currentTarget.value;
-//             $searchresults.append(renderTeamSearch);
-//         }
-//     }
-// })
 async function handleSearchTeam(event) {
     const $searchresults = $('#tName-results');
     $('#tName-results *').replaceWith();
@@ -798,16 +750,12 @@ async function handleSearchTeam(event) {
                 data: { "name": enteredTeam },
                 success: function (response, textStatus, jqXHR) {
                     let team = jqXHR.responseJSON
-                    // console.log(team)
                     $searchresults.append(renderTeamSearch(team));
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log(errorThrown)
                 }
             });
-            // let name = await getPlayerByName(event.currentTarget.value);
-            // console.log(name)
-           
         }
     }
 }
@@ -833,12 +781,9 @@ function autoName(searchTerm) {
     if (searchTerm === "") {
         return "";
     }
-    // console.log(playerNames[1])
-    // console.log(searchTerm)
     let data = playerNames.find(value => value.toLowerCase().indexOf(searchTerm.toLowerCase()) === 0);
     if (data !== undefined) {
         let name = data;
-        // console.log(name)
         return name;
     } else {
         return "";
@@ -853,7 +798,6 @@ function autoTeam(searchTerm) {
     let data = teamNames.find(value => value.toLowerCase().indexOf(searchTerm.toLowerCase()) === 0);
     if (data !== undefined) {
         let name = data;
-        // console.log(name)
         return name;
     } else {
         return "";
@@ -892,7 +836,6 @@ document.getElementById('tNameInput').addEventListener('input', debounce(handleT
 async function handleSubmitPlayerAuto(event) {
     let output = document.getElementById('pNameAuto');
     output.innerHTML = ``;
-    // $('#pNameInput').replaceWith(`<input class="input is-primary" id="pNameInput" type="text" placeholder="${enteredData}"/>`);
     const $searchresults = $('#pName-results');
     let result = await $.ajax({
         url: '/getoneplayer',
@@ -901,7 +844,6 @@ async function handleSubmitPlayerAuto(event) {
         data: { "name": enteredData },
         success: function (response, textStatus, jqXHR) {
             let player = jqXHR.responseJSON
-            // console.log(player)
             $searchresults.append(renderPlayerSearch(player));
         }
     });
@@ -918,7 +860,6 @@ async function handleSubmitTeamAuto(event) {
         data: { "name": enteredTeam },
         success: function (response, textStatus, jqXHR) {
             let team = jqXHR.responseJSON
-            // console.log(team)
             $searchresults.append(renderTeamSearch(team));
         }
     });
@@ -948,7 +889,6 @@ async function getDataBase(id) {
         data: { "id": id }
     });
     result = JSON.parse(JSON.stringify(result));
-    // console.log(result.responseJSON)
     dataset = result.responseJSON;
 }
 
@@ -960,7 +900,6 @@ async function getPlayerByName(name) {
         data: { "name": name }
     });
     result = JSON.parse(JSON.stringify(result));
-    // console.log(result.responseJSON)
     return result.responseJSON;
 }
 
@@ -1503,7 +1442,6 @@ function loadStuffIntoDOM() {
                 type: 'GET',
                 dataType: 'json',
                 success: function (response, textStatus, jqXHR) {
-                    // console.log(jqXHR.responseJSON);
                     for (let i = 0; i < jqXHR.responseJSON.length; i++) {
                         favoritedPlayers[i] = jqXHR.responseJSON[i];
                     }
@@ -1517,7 +1455,6 @@ function loadStuffIntoDOM() {
                 type: 'GET',
                 dataType: 'json',
                 success: function (response, textStatus, jqXHR) {
-                    // console.log(jqXHR.responseJSON);
                     for (let i = 0; i < jqXHR.responseJSON.length; i++) {
                         favoritedTeams[i] = jqXHR.responseJSON[i];
                     }

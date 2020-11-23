@@ -8,7 +8,6 @@ let tempPlayers = [];
 
 function findCountry(player) {
     let country = ""
-    // console.log(player)
     for (let i = 1; i < countryOfPlayers.length; i++) {
         let playerArr = countryOfPlayers[i].players
         for (let j = 0; j < playerArr.length; j++) {
@@ -37,7 +36,6 @@ function findTeamByAlias(teamAlias) {
 
 
 function findCurrentTeamByPlayer(player) {
-    // let lookie = dataset[0].players.find(p => p.name == player)
     for (let i = 0; i < currentTeams.length; i++) {
         if (currentTeams[i].status) {
             if (currentTeams[i].sub.toLowerCase() == player.toLowerCase() || currentTeams[i].coach.toLowerCase() == player.toLowerCase() ) {
@@ -203,9 +201,6 @@ function loadStuffIntoDom() {
         dataType: 'json',
         success: function (response, textStatus, jqXHR) {
             favoritedPlayers = jqXHR.responseJSON;
-            // for (let i = 0; i < jqXHR.responseJSON.length; i++) {
-            //     renderPlayerCard(jqXHR.responseJSON[i]);
-            // }
         }
     })
     $.ajax({
