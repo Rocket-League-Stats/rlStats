@@ -6,7 +6,6 @@ var logger = require('morgan');
 var CryptoJS = require("crypto-js");
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -27,7 +26,7 @@ app.use(bodyParser.json());
 const expressSession = require('express-session');
 
 app.use(expressSession({
-  name: "kmpSessionCookie",
+  name: "currSessionCookie",
   secret: "express session secret",
   resave: false,
   saveUninitialized: false
@@ -195,7 +194,6 @@ app.get('/secretteam', (req, res) => {
   return;
 });
 
-
 app.post('/secret', (req, res)=> {
   if (req.session.user == undefined) {
       res.status(403).send("Unauthorized");
@@ -299,12 +297,6 @@ app.get('/getplayernames', async (req, res) => {
 })
 
 app.get('/getteamnames', async (req, res) => {
-  // let result = await getPlayerDB();
-  // result = JSON.parse(JSON.stringify(result))
-  //   var a = [];
-  //   for (var i=0, l=result.length; i<l; i++){
-  //       if (a.indexOf(result[i].team) === -1 && result[i].team !== ''){a.push(result[i].team);}
-  //         }
   res.json(["DIGNITAS",    "RENAULT VITALITY",    "OXYGEN ESPORTS",    "FADEAWAY",    "ENDPOINT",    "BARRAGE",    "GUILD",    "TRIPLE TROUBLE",    "BARCA ESPORTS",    "GALAXY RACER",    "SOLARY",    "MAGNIFICO",    "LIBERTAS",    "VODAFONE GIANTS",    "TOP BLOKES",    "TEAM BDS",    "TLR ESPORT",    "HOLY COW!",    "MINKZ GAMING",    "TEAM NAME",    "TEAM LIQUID",    "CHALKED",    "DRILLERS",    "SERVETTE GENEVA",    "SINGULARITY",    "VENC GAMING",    "MONKEYS",    "UNIQUESTARS",    "STORMTROOPERS",    "NORDAVIND DNB",    "NAMESEEKERS",    "ASC. LEGENDS",    "GLORY4BUILDERS",    "OPP BLOCK",    "TLR ESPORTS",    "FIERCE ESPORTS",    "TEAM SINGULARITY",    "GAMEUP",    "ESPORTS BERG",    "2BAGUETTES",    "VGIA",    "PION",    "TEAM ORANGE",    "S2V ESPORTS",    "Catalysm & Kryptos & Ekon",    "G2 ESPORTS",    "KC PIONEERS",    "ROGUE",    "THE PEEPS",    "NRG",    "ALPINE ESPORTS",    "TEAM ENVY",    "SSG",    "KEEP CALM",    "KCAI",    "STAY FRESH",    "Kaydop & Fairy Peak! & Alpha54",    "EDELWEISS",    "NUMB THUMB DUMB",    "TEAM OPLON",    "FIERCE",    "TRAINHARD ESPORT",    "RIXGG",    "ESPORT BERG",    "EKIP",    "GAME FIST",    "STEALTH7 ESPORTS",    "LIQUID",    "DENIED",    "YOU CHOOSE PESCE",    "SAUCE SQUAD",    "DRIFTERS",    "WOLVES ESPORTS",    "REDEMPTION",    "TEAM QUESO",    "SONIQS",    "KNIGHTS",    "SPACESTATION",    "PLOT TWIST",    "BOSF ESPORTS",    "TEAM FRONTLINE",    "GHOST GAMING",    "EUNITED",    "XSET",    "G2",    "JAMAL JABARY",    "CONTINUUM",    "ADEPT",    "NEFARIOUS",    "CHARLOTTE",    "72PC",    "VERSION1",    "JJ",    "PPS",    "DRIP",    "CLT",    "ZOOKEEPERS",    "1ST",    "VALORSGG",    "CRIMSON WINGS",    "MAMBA MODE",    "FFF",    "OMELETTE",    "INFINITE SHOTS",    "THE 1ST GRADERS",    "HC ESPORTS",    "TEAM METEOR",    "ALLMID",    "FLASH POINT",    "OSTYN",    "ZABOOMAFOO",    "8-BIT ESPORTS",    "AND THERE IT IS",    "MORNING LIGHT",    "STROMBOLI",    "ZERO ISSUE",    "THE MATONES",    "DOWN TWO EARTH",    "PINE",    "EMPTY SPACE",    "THE LOVE BELOW"])
 })
 
@@ -328,48 +320,6 @@ app.post('/getoneteam', async (req, res) => {
   res.json(result)
 })
 
-app.get('/doSomething', async (req, res) => {
-  let result = await temporary();
-  res.json(result)
-})
-
-async function temporary () { 
-  const client = await MongoClient.connect("mongodb+srv://host:lBKPP2l2vREFQGLF@cluster0.gbvl6.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true })
-        .catch(err => { console.log(err); }); 
-        if (!client) {
-          return;
-      }      
-      try {
-        const collection = client.db("test").collection("players");
-        // const col = client.db("test").collection("teamnames")
-
-        let temp = []
-        let players = await collection.find().forEach( function(myDoc) { 
-          // col.insert(myDoc.name)
-          temp.push(myDoc.name)
-        });
-
-        let unique = temp.filter(function onlyUnique(value, index, self) {
-          return self.indexOf(value) === index;
-        });
-        console.log(unique)
-        return unique;
-
-        const col = client.db("test").collection("teamnames")
-       let a = await col.insertMany(unique);
-        // temp = Object.assign({}, temp);
-        client.close();
-
-
-    } catch (err) {
-        console.log(err);
-    } finally {
-
-        client.close();
-    }
-  
-
-}
 
 async function getPlayerByName (name) { 
   const client = await MongoClient.connect("mongodb+srv://host:lBKPP2l2vREFQGLF@cluster0.gbvl6.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true })
@@ -455,28 +405,6 @@ async function getTeamDB () {
   client.close();
 }
 
-async function getPlayerDB () { 
-  const client = await MongoClient.connect("mongodb+srv://host:lBKPP2l2vREFQGLF@cluster0.gbvl6.mongodb.net/test?retryWrites=true&w=majority", { useNewUrlParser: true })
-        .catch(err => { console.log(err); }); 
-        if (!client) {
-          return;
-      }      
-      try {
-        const collection = client.db("test").collection("players");
-        let temp = []
-        let players = await collection.find().forEach( function(myDoc) { 
-          temp = temp.concat(myDoc)
-        });
-        client.close();
-        return temp;
-    } catch (err) {
-        console.log(err);
-    } finally {
-        client.close();
-    }  
-  client.close();
-}
-
  async function deleteSecret (id, owner) { 
   const client = await MongoClient.connect("mongodb+srv://host:lBKPP2l2vREFQGLF@cluster0.gbvl6.mongodb.net/Secret?retryWrites=true&w=majority", { useNewUrlParser: true })
         .catch(err => { console.log(err); }); 
@@ -527,7 +455,6 @@ async function deleteSecretTeam (id, owner) {
 }
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 
 
