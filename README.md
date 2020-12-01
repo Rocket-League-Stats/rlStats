@@ -11,6 +11,8 @@ In order to run project locally run the commands:
 
 ### How to Use the App:
 
+Note: You must be logged in if you want your favorites to be saved
+
 <p align="center">
   <img src="diagrams\Leaderboard Features.PNG" title="hover text">
 </p>
@@ -18,6 +20,8 @@ In order to run project locally run the commands:
 <p align="center">
   <img src="diagrams\Search Features.PNG" title="hover text">
 </p>
+
+Once logged in, you can view your favorite teams and players, as well as their cumulative stats throughout RLCSX on the My Favorites page.
 
 ### Using the Backend
 
